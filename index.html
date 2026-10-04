@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salma Mustefa | Cinematic Video Editor & CapCut Specialist</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .perspective { perspective: 1200px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+
+        /* Smooth animated fluid background orbs */
+        @keyframes orbFloat1 {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(70px, -60px) scale(1.2); }
+            66% { transform: translate(-50px, 45px) scale(0.9); }
+        }
+        @keyframes orbFloat2 {
+            0%, 100% { transform: translate(0px, 0px) scale(1.05); }
+            40% { transform: translate(-80px, 50px) scale(1.25); }
+            75% { transform: translate(60px, -35px) scale(0.88); }
+        }
+        @keyframes orbFloat3 {
+            0%, 100% { transform: translate(0px, 0px) scale(0.95); }
+            50% { transform: translate(70px, 60px) scale(1.22); }
+        }
+        @keyframes orbFloat4 {
+            0%, 100% { transform: translate(0px, 0px) scale(1.1); }
+            45% { transform: translate(-60px, -50px) scale(0.85); }
+            80% { transform: translate(50px, 30px) scale(1.15); }
+        }
+        @keyframes ambientPulse {
+            0%, 100% { opacity: 0.45; filter: blur(75px); }
+            50% { opacity: 0.75; filter: blur(95px); }
+        }
+        @keyframes waterSheen {
+            0% { transform: translateX(-160%) rotate(25deg); }
+            100% { transform: translateX(260%) rotate(25deg); }
+        }
+        @keyframes liquidRipple {
+            0%, 100% { transform: scale(1) translate(0, 0); }
+            50% { transform: scale(1.03) translate(-2px, -3px); }
+        }
+
+        .orb-1 {
+            animation: orbFloat1 18s ease-in-out infinite alternate, ambientPulse 9s ease-in-out infinite alternate;
+        }
+        .orb-2 {
+            animation: orbFloat2 22s ease-in-out infinite alternate, ambientPulse 11s ease-in-out infinite alternate;
+        }
+        .orb-3 {
+            animation: orbFloat3 16s ease-in-out infinite alternate, ambientPulse 8s ease-in-out infinite alternate;
+        }
+        .orb-4 {
+            animation: orbFloat4 20s ease-in-out infinite alternate, ambientPulse 10s ease-in-out infinite alternate;
+        }
+
+        /* Glass Water Card Aesthetics */
+        .glass-water {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 45%, rgba(255, 255, 255, 0.06) 100%);
+            backdrop-filter: blur(28px) saturate(210%);
+            -webkit-backdrop-filter: blur(28px) saturate(210%);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-top: 1.5px solid rgba(255, 255, 255, 0.42);
+            border-left: 1.2px solid rgba(255, 255, 255, 0.28);
+            box-shadow: 
+                inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.35),
+                inset 0 -2px 6px 0 rgba(0, 0, 0, 0.55),
+                inset 1px 0 2px 0 rgba(255, 255, 255, 0.15),
+                0 20px 45px -10px rgba(0, 0, 0, 0.65),
+                0 0 25px rgba(255, 255, 255, 0.03);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Liquid surface reflection highlight */
+        .glass-water::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 46%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.02) 80%, transparent 100%);
+            border-radius: 24px 24px 140px 140px / 24px 24px 30px 30px;
+            pointer-events: none;
+            opacity: 0.85;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Water droplet shimmer highlight on hover */
+        .glass-water::after {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -60%;
+            width: 70px;
+            height: 250%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transform: rotate(25deg);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .group:hover .glass-water::after {
+            opacity: 1;
+            animation: waterSheen 1.3s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        /* Back Card Glass Liquid Variants */
+        .glass-water-back-purple {
+            background: radial-gradient(circle at top right, rgba(168, 85, 247, 0.25), transparent 70%),
+                        linear-gradient(135deg, rgba(46, 16, 101, 0.65) 0%, rgba(15, 23, 42, 0.8) 100%);
+            backdrop-filter: blur(28px) saturate(220%);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            border-top: 1.5px solid rgba(216, 180, 254, 0.6);
+            box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.3), 0 20px 45px -10px rgba(88, 28, 135, 0.5);
+        }
+
+        .glass-water-back-emerald {
+            background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.25), transparent 70%),
+                        linear-gradient(135deg, rgba(6, 78, 59, 0.65) 0%, rgba(15, 23, 42, 0.8) 100%);
+            backdrop-filter: blur(28px) saturate(220%);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-top: 1.5px solid rgba(167, 243, 208, 0.6);
+            box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.3), 0 20px 45px -10px rgba(5, 150, 105, 0.4);
+        }
+
+        .glass-water-back-blue {
+            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.25), transparent 70%),
+                        linear-gradient(135deg, rgba(29, 78, 216, 0.65) 0%, rgba(15, 23, 42, 0.8) 100%);
+            backdrop-filter: blur(28px) saturate(220%);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            border-top: 1.5px solid rgba(191, 219, 254, 0.6);
+            box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.3), 0 20px 45px -10px rgba(37, 99, 235, 0.4);
+        }
+
+        .glass-water-back-pink {
+            background: radial-gradient(circle at top right, rgba(244, 63, 94, 0.25), transparent 70%),
+                        linear-gradient(135deg, rgba(159, 18, 57, 0.65) 0%, rgba(15, 23, 42, 0.8) 100%);
+            backdrop-filter: blur(28px) saturate(220%);
+            border: 1px solid rgba(244, 63, 94, 0.35);
+            border-top: 1.5px solid rgba(254, 205, 211, 0.6);
+            box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.3), 0 20px 45px -10px rgba(225, 29, 72, 0.4);
+        }
+
+        /* Ambient liquid grid backdrop */
+        .bg-mesh {
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 10% 20%, rgba(236, 72, 153, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-[#05070d] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-purple-500 selection:text-white relative overflow-x-hidden bg-mesh">
+
+    <!-- Smooth Dynamic Animated Ambient Background Orbs -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <!-- Floating Orb 1: Violet/Purple glow -->
+        <div class="orb-1 absolute -top-24 left-1/5 w-[520px] h-[520px] bg-purple-600/25 rounded-full blur-[110px]"></div>
+        <!-- Floating Orb 2: Deep Cyan/Blue glow -->
+        <div class="orb-2 absolute top-1/3 -right-20 w-[580px] h-[580px] bg-cyan-500/20 rounded-full blur-[120px]"></div>
+        <!-- Floating Orb 3: Emerald/Teal glow -->
+        <div class="orb-3 absolute -bottom-28 left-10 w-[500px] h-[500px] bg-emerald-500/18 rounded-full blur-[115px]"></div>
+        <!-- Floating Orb 4: Magenta/Rose glow -->
+        <div class="orb-4 absolute top-2/3 right-1/4 w-[480px] h-[480px] bg-pink-600/18 rounded-full blur-[125px]"></div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="pt-16 pb-8 px-6 text-center max-w-4xl mx-auto relative z-10">
+        <div class="inline-block mb-4 px-4 py-1.5 rounded-full border border-purple-500/40 bg-purple-500/15 backdrop-blur-md text-purple-300 text-xs font-semibold tracking-wider uppercase shadow-lg shadow-purple-500/10">
+            CapCut Master & Visual Storyteller
+        </div>
+        <h1 class="text-4xl md:text-6xl font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-purple-300 bg-clip-text text-transparent drop-shadow-sm">
+            Salma Mustefa
+        </h1>
+        <p class="mt-4 text-slate-300/80 text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+            Transforming raw footage into high-impact cinematic experiences. Explore my curated portfolio cards below—click any card to unlock the full edit.
+        </p>
+        
+        <!-- Social & Contact Quick Links with Glass Touch -->
+        <div class="flex flex-wrap justify-center items-center gap-4 mt-6 text-sm">
+            <a href="mailto:@salmamustefa@gmail.com" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] backdrop-blur-xl border border-white/10 hover:border-purple-400/50 hover:bg-white/[0.08] transition-all text-slate-300 hover:text-white shadow-sm">
+                <span>📧</span> @salmamustefa@gmail.com
+            </a>
+            <a href="https://tiktok.com/@seloumtech" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.04] backdrop-blur-xl border border-white/10 hover:border-pink-400/50 hover:bg-white/[0.08] transition-all text-slate-300 hover:text-white shadow-sm">
+                <span>🎵</span> @seloumtech
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Flashcard Grid with Glass Water Effect -->
+    <main class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 w-full relative z-10">
+
+        <!-- Flashcard 1: Headphones -->
+        <div class="perspective h-96 cursor-pointer group" onclick="toggleCard(this)">
+            <div class="relative w-full h-full duration-700 transform-style-3d group-hover:rotate-y-180 rounded-3xl">
+                <!-- Front of Card (Glass Water) -->
+                <div class="absolute inset-0 w-full h-full glass-water hover:border-purple-400/50 rounded-3xl p-8 flex flex-col justify-between backface-hidden">
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold uppercase tracking-wider px-3.5 py-1 bg-purple-500/20 text-purple-200 rounded-full border border-purple-400/30 backdrop-blur-md">Product Spotlight</span>
+                            <span class="text-xs text-slate-400 font-mono">01 / 04</span>
+                        </div>
+                        <h3 class="text-3xl font-extrabold mt-6 text-white tracking-tight drop-shadow-sm">Immersive Headphones</h3>
+                        <p class="text-slate-300/85 text-sm mt-3 leading-relaxed">Sleek product showcase featuring precision cuts, punchy beat syncs, and dramatic audio visualizer styling.</p>
+                    </div>
+                    <div class="relative z-10 text-xs font-semibold text-purple-300 flex items-center justify-between pt-4 border-t border-white/10">
+                        <span>Tap to reveal project</span>
+                        <span class="text-base group-hover:translate-x-1 transition-transform">➔</span>
+                    </div>
+                </div>
+                <!-- Back of Card (Tinted Liquid Glass) -->
+                <div class="absolute inset-0 w-full h-full glass-water glass-water-back-purple rounded-3xl p-8 flex flex-col justify-center items-center text-center rotate-y-180 backface-hidden">
+                    <div class="w-16 h-16 rounded-2xl bg-purple-500/20 border border-purple-400/40 backdrop-blur-md flex items-center justify-center text-2xl mb-4 text-purple-300 shadow-inner">🎧</div>
+                    <h3 class="text-2xl font-bold mb-2 text-white">Headphones Showcase</h3>
+                    <p class="text-slate-200 text-sm mb-6 max-w-xs font-light">Ready to review the final grade and intricate CapCut timeline transitions.</p>
+                    <a href="https://drive.google.com/file/d/14Irp9Jf0LIV-AQTW6JTvCcALOyJGnb4d/view?usp=drive_link" target="_blank" onclick="event.stopPropagation()" class="px-7 py-3.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-purple-600/40 hover:shadow-purple-500/60 transition-all text-sm tracking-wide">
+                        Watch Full Video 🚀
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flashcard 2: Saudi National Day -->
+        <div class="perspective h-96 cursor-pointer group" onclick="toggleCard(this)">
+            <div class="relative w-full h-full duration-700 transform-style-3d group-hover:rotate-y-180 rounded-3xl">
+                <!-- Front of Card (Glass Water) -->
+                <div class="absolute inset-0 w-full h-full glass-water hover:border-emerald-400/50 rounded-3xl p-8 flex flex-col justify-between backface-hidden">
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold uppercase tracking-wider px-3.5 py-1 bg-emerald-500/20 text-emerald-200 rounded-full border border-emerald-400/30 backdrop-blur-md">Cultural / Event</span>
+                            <span class="text-xs text-slate-400 font-mono">02 / 04</span>
+                        </div>
+                        <h3 class="text-3xl font-extrabold mt-6 text-white tracking-tight drop-shadow-sm">Saudi National Day</h3>
+                        <p class="text-slate-300/85 text-sm mt-3 leading-relaxed">A grand cinematic montage celebrating national heritage, smooth archival merging, and patriotic pacing.</p>
+                    </div>
+                    <div class="relative z-10 text-xs font-semibold text-emerald-300 flex items-center justify-between pt-4 border-t border-white/10">
+                        <span>Tap to reveal project</span>
+                        <span class="text-base group-hover:translate-x-1 transition-transform">➔</span>
+                    </div>
+                </div>
+                <!-- Back of Card (Tinted Liquid Glass) -->
+                <div class="absolute inset-0 w-full h-full glass-water glass-water-back-emerald rounded-3xl p-8 flex flex-col justify-center items-center text-center rotate-y-180 backface-hidden">
+                    <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 backdrop-blur-md flex items-center justify-center text-2xl mb-4 text-emerald-300 shadow-inner">🇸🇦</div>
+                    <h3 class="text-2xl font-bold mb-2 text-white">Saudi National Day Edit</h3>
+                    <p class="text-slate-200 text-sm mb-6 max-w-xs font-light">Experience the high-energy national celebration edit crafted seamlessly.</p>
+                    <a href="https://drive.google.com/file/d/1YM-0jIFQtNyJVVaO48MwG5WpiALiRxbc/view?usp=drive_link" target="_blank" onclick="event.stopPropagation()" class="px-7 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-semibold rounded-xl shadow-lg shadow-emerald-600/40 hover:shadow-emerald-500/60 transition-all text-sm tracking-wide">
+                        Watch Full Video 🚀
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flashcard 3: AI App Collection -->
+        <div class="perspective h-96 cursor-pointer group" onclick="toggleCard(this)">
+            <div class="relative w-full h-full duration-700 transform-style-3d group-hover:rotate-y-180 rounded-3xl">
+                <!-- Front of Card (Glass Water) -->
+                <div class="absolute inset-0 w-full h-full glass-water hover:border-blue-400/50 rounded-3xl p-8 flex flex-col justify-between backface-hidden">
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold uppercase tracking-wider px-3.5 py-1 bg-blue-500/20 text-blue-200 rounded-full border border-blue-400/30 backdrop-blur-md">Tech & Software</span>
+                            <span class="text-xs text-slate-400 font-mono">03 / 04</span>
+                        </div>
+                        <h3 class="text-3xl font-extrabold mt-6 text-white tracking-tight drop-shadow-sm">AI App Collection</h3>
+                        <p class="text-slate-300/85 text-sm mt-3 leading-relaxed">Fast-paced tech compilation highlighting multiple AI tools with custom dynamic text animations and UI zooms.</p>
+                    </div>
+                    <div class="relative z-10 text-xs font-semibold text-blue-300 flex items-center justify-between pt-4 border-t border-white/10">
+                        <span>Tap to reveal project</span>
+                        <span class="text-base group-hover:translate-x-1 transition-transform">➔</span>
+                    </div>
+                </div>
+                <!-- Back of Card (Tinted Liquid Glass) -->
+                <div class="absolute inset-0 w-full h-full glass-water glass-water-back-blue rounded-3xl p-8 flex flex-col justify-center items-center text-center rotate-y-180 backface-hidden">
+                    <div class="w-16 h-16 rounded-2xl bg-blue-500/20 border border-blue-400/40 backdrop-blur-md flex items-center justify-center text-2xl mb-4 text-blue-300 shadow-inner">🤖</div>
+                    <h3 class="text-2xl font-bold mb-2 text-white">AI App Collection</h3>
+                    <p class="text-slate-200 text-sm mb-6 max-w-xs font-light">Explore how complex software features are distilled into engaging shorts.</p>
+                    <a href="https://drive.google.com/file/d/1ua2yi8pIntqNDHzIRiDHJjbcxOAjvKD_/view?usp=drive_link" target="_blank" onclick="event.stopPropagation()" class="px-7 py-3.5 bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-400 hover:to-cyan-500 text-white font-semibold rounded-xl shadow-lg shadow-blue-600/40 hover:shadow-blue-500/60 transition-all text-sm tracking-wide">
+                        Watch Full Video 🚀
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flashcard 4: E-SIM -->
+        <div class="perspective h-96 cursor-pointer group" onclick="toggleCard(this)">
+            <div class="relative w-full h-full duration-700 transform-style-3d group-hover:rotate-y-180 rounded-3xl">
+                <!-- Front of Card (Glass Water) -->
+                <div class="absolute inset-0 w-full h-full glass-water hover:border-pink-400/50 rounded-3xl p-8 flex flex-col justify-between backface-hidden">
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold uppercase tracking-wider px-3.5 py-1 bg-pink-500/20 text-pink-200 rounded-full border border-pink-400/30 backdrop-blur-md">Telecom / Explainer</span>
+                            <span class="text-xs text-slate-400 font-mono">04 / 04</span>
+                        </div>
+                        <h3 class="text-3xl font-extrabold mt-6 text-white tracking-tight drop-shadow-sm">E-SIM Explainer</h3>
+                        <p class="text-slate-300/85 text-sm mt-3 leading-relaxed">Engaging digital lifestyle edit demonstrating E-SIM benefits with seamless graphic overlays and smooth pacing.</p>
+                    </div>
+                    <div class="relative z-10 text-xs font-semibold text-pink-300 flex items-center justify-between pt-4 border-t border-white/10">
+                        <span>Tap to reveal project</span>
+                        <span class="text-base group-hover:translate-x-1 transition-transform">➔</span>
+                    </div>
+                </div>
+                <!-- Back of Card (Tinted Liquid Glass) -->
+                <div class="absolute inset-0 w-full h-full glass-water glass-water-back-pink rounded-3xl p-8 flex flex-col justify-center items-center text-center rotate-y-180 backface-hidden">
+                    <div class="w-16 h-16 rounded-2xl bg-pink-500/20 border border-pink-400/40 backdrop-blur-md flex items-center justify-center text-2xl mb-4 text-pink-300 shadow-inner">📶</div>
+                    <h3 class="text-2xl font-bold mb-2 text-white">E-SIM Showcase</h3>
+                    <p class="text-slate-200 text-sm mb-6 max-w-xs font-light">Watch the clean information design and visual retention techniques in action.</p>
+                    <a href="https://drive.google.com/file/d/1tjM3zQLUhqnLCc6OVywwh35WaPmNgUD3/view?usp=drive_link" target="_blank" onclick="event.stopPropagation()" class="px-7 py-3.5 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-semibold rounded-xl shadow-lg shadow-pink-600/40 hover:shadow-pink-500/60 transition-all text-sm tracking-wide">
+                        Watch Full Video 🚀
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center text-slate-500 text-sm border-t border-white/5 mt-16 relative z-10">
+        <p>&copy; 2026 Salma Mustefa.</p>
+    </footer>
+
+    <!-- Flip Script -->
+    <script>
+        function toggleCard(cardElement) {
+            const innerCard = cardElement.querySelector('.transform-style-3d');
+            innerCard.classList.toggle('rotate-y-180');
+        }
+    </script>
+</body>
+</html>
