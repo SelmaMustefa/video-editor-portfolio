@@ -6,10 +6,62 @@
     <title>Salma Mustefa | Cinematic Video Editor & CapCut Specialist</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        .perspective { perspective: 1200px; }
-        .transform-style-3d { transform-style: preserve-3d; }
-        .backface-hidden { backface-visibility: hidden; }
-        .rotate-y-180 { transform: rotateY(180deg); }
+        /* Card Flip Structure - Fixed in Same Position */
+        .card-container {
+            perspective: 1200px;
+            -webkit-perspective: 1200px;
+            height: 24rem; /* 384px */
+            position: relative;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-transition: -webkit-transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center center;
+        }
+
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute !important;
+            inset: 0 !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            -webkit-backface-visibility: hidden !important;
+            backface-visibility: hidden !important;
+            border-radius: 1.5rem;
+            overflow: hidden;
+        }
+
+        .card-face-front {
+            transform: rotateY(0deg);
+            -webkit-transform: rotateY(0deg);
+            z-index: 2;
+        }
+
+        .card-face-back {
+            transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
+            z-index: 1;
+        }
+
+        .card-inner.flipped .card-face-front {
+            z-index: 1;
+        }
+
+        .card-inner.flipped .card-face-back {
+            z-index: 2;
+        }
 
         /* Smooth animated fluid background orbs */
         @keyframes orbFloat1 {
@@ -39,10 +91,6 @@
             0% { transform: translateX(-160%) rotate(25deg); }
             100% { transform: translateX(260%) rotate(25deg); }
         }
-        @keyframes liquidRipple {
-            0%, 100% { transform: scale(1) translate(0, 0); }
-            50% { transform: scale(1.03) translate(-2px, -3px); }
-        }
 
         .orb-1 {
             animation: orbFloat1 18s ease-in-out infinite alternate, ambientPulse 9s ease-in-out infinite alternate;
@@ -71,9 +119,7 @@
                 inset 1px 0 2px 0 rgba(255, 255, 255, 0.15),
                 0 20px 45px -10px rgba(0, 0, 0, 0.65),
                 0 0 25px rgba(255, 255, 255, 0.03);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
         /* Liquid surface reflection highlight */
@@ -88,7 +134,6 @@
             border-radius: 24px 24px 140px 140px / 24px 24px 30px 30px;
             pointer-events: none;
             opacity: 0.85;
-            transition: opacity 0.4s ease;
         }
 
         /* Water droplet shimmer highlight on hover */
@@ -106,7 +151,7 @@
             transition: opacity 0.3s;
         }
 
-        .group:hover .glass-water::after {
+        .card-container:hover .glass-water::after {
             opacity: 1;
             animation: waterSheen 1.3s cubic-bezier(0.19, 1, 0.22, 1);
         }
@@ -194,14 +239,14 @@
         </div>
     </header>
 
-    <!-- Main Flashcard Grid with Glass Water Effect -->
+    <!-- Main Flashcard Grid with Fixed Position In-Place Flipping -->
     <main class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 w-full relative z-10">
 
         <!-- Flashcard 1: Headphones -->
-        <div class="perspective h-96 cursor-pointer group" onclick="toggleCard(this)">
-            <div class="relative w-full h-full duration-700 transform-style-3d group-hover:rotate-y-180 rounded-3xl">
+        <div class="card-container cursor-pointer group" onclick="toggleCard(this)">
+            <div class="card-inner">
                 <!-- Front of Card (Glass Water) -->
-                <div class="absolute inset-0 w-full h-full glass-water hover:border-purple-400/50 rounded-3xl p-8 flex flex-col justify-between backface-hidden">
+                <div class="card-face card-face-front glass-water hover:border-purple-400/50 p-8 flex flex-col justify-between">
                     <div class="relative z-10">
                         <div class="flex justify-between items-center">
                             <span class="text-xs font-bold uppercase tracking-wider px-3.5 py-1 bg-purple-500/20 text-purple-200 rounded-full border border-purple-400/30 backdrop-blur-md">Product Spotlight</span>
@@ -215,8 +260,8 @@
                         <span class="text-base group-hover:translate-x-1 transition-transform">➔</span>
                     </div>
                 </div>
-                <!-- Back of Card (Tinted Liquid Glass) -->
-                <div class="absolute inset-0 w-full h-full glass-water glass-water-back-purple rounded-3xl p-8 flex flex-col justify-center items-center text-center rotate-y-180 backface-hidden">
+                <!-- Back of Card (Tinted Liquid Glass - In Same Exact Position) -->
+                <div class="card-face card-face-back glass-water glass-water-back-purple p-8 flex flex-col justify-center items-center text-center">
                     <div class="w-16 h-16 rounded-2xl bg-purple-500/20 border border-purple-400/40 backdrop-blur-md flex items-center justify-center text-2xl mb-4 text-purple-300 shadow-inner">🎧</div>
                     <h3 class="text-2xl font-bold mb-2 text-white">Headphones Showcase</h3>
                     <p class="text-slate-200 text-sm mb-6 max-w-xs font-light">Ready to review the final grade and intricate CapCut timeline transitions.</p>
@@ -228,10 +273,10 @@
         </div>
 
         <!-- Flashcard 2: Saudi National Day -->
-        <div class="perspective h-96 cursor-pointer group" onclick="toggleCard(this)">
-            <div class="relative w-full h-full duration-700 transform-style-3d group-hover:rotate-y-180 rounded-3xl">
+        <div class="card-container cursor-pointer group" onclick="toggleCard(this)">
+            <div class="card-inner">
                 <!-- Front of Card (Glass Water) -->
-                <div class="absolute inset-0 w-full h-full glass-water hover:border-emerald-400/50 rounded-3xl p-8 flex flex-col justify-between backface-hidden">
+                <div class="card-face card-face-front glass-water hover:border-emerald-400/50 p-8 flex flex-col justify-between">
                     <div class="relative z-10">
                         <div class="flex justify-between items-center">
                             <span class="text-xs font-bold uppercase tracking-wider px-3.5 py-1 bg-emerald-500/20 text-emerald-200 rounded-full border border-emerald-400/30 backdrop-blur-md">Cultural / Event</span>
@@ -245,8 +290,8 @@
                         <span class="text-base group-hover:translate-x-1 transition-transform">➔</span>
                     </div>
                 </div>
-                <!-- Back of Card (Tinted Liquid Glass) -->
-                <div class="absolute inset-0 w-full h-full glass-water glass-water-back-emerald rounded-3xl p-8 flex flex-col justify-center items-center text-center rotate-y-180 backface-hidden">
+                <!-- Back of Card (Tinted Liquid Glass - In Same Exact Position) -->
+                <div class="card-face card-face-back glass-water glass-water-back-emerald p-8 flex flex-col justify-center items-center text-center">
                     <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 backdrop-blur-md flex items-center justify-center text-2xl mb-4 text-emerald-300 shadow-inner">🇸🇦</div>
                     <h3 class="text-2xl font-bold mb-2 text-white">Saudi National Day Edit</h3>
                     <p class="text-slate-200 text-sm mb-6 max-w-xs font-light">Experience the high-energy national celebration edit crafted seamlessly.</p>
@@ -258,10 +303,10 @@
         </div>
 
         <!-- Flashcard 3: AI App Collection -->
-        <div class="perspective h-96 cursor-pointer group" onclick="toggleCard(this)">
-            <div class="relative w-full h-full duration-700 transform-style-3d group-hover:rotate-y-180 rounded-3xl">
+        <div class="card-container cursor-pointer group" onclick="toggleCard(this)">
+            <div class="card-inner">
                 <!-- Front of Card (Glass Water) -->
-                <div class="absolute inset-0 w-full h-full glass-water hover:border-blue-400/50 rounded-3xl p-8 flex flex-col justify-between backface-hidden">
+                <div class="card-face card-face-front glass-water hover:border-blue-400/50 p-8 flex flex-col justify-between">
                     <div class="relative z-10">
                         <div class="flex justify-between items-center">
                             <span class="text-xs font-bold uppercase tracking-wider px-3.5 py-1 bg-blue-500/20 text-blue-200 rounded-full border border-blue-400/30 backdrop-blur-md">Tech & Software</span>
@@ -275,8 +320,8 @@
                         <span class="text-base group-hover:translate-x-1 transition-transform">➔</span>
                     </div>
                 </div>
-                <!-- Back of Card (Tinted Liquid Glass) -->
-                <div class="absolute inset-0 w-full h-full glass-water glass-water-back-blue rounded-3xl p-8 flex flex-col justify-center items-center text-center rotate-y-180 backface-hidden">
+                <!-- Back of Card (Tinted Liquid Glass - In Same Exact Position) -->
+                <div class="card-face card-face-back glass-water glass-water-back-blue p-8 flex flex-col justify-center items-center text-center">
                     <div class="w-16 h-16 rounded-2xl bg-blue-500/20 border border-blue-400/40 backdrop-blur-md flex items-center justify-center text-2xl mb-4 text-blue-300 shadow-inner">🤖</div>
                     <h3 class="text-2xl font-bold mb-2 text-white">AI App Collection</h3>
                     <p class="text-slate-200 text-sm mb-6 max-w-xs font-light">Explore how complex software features are distilled into engaging shorts.</p>
@@ -288,10 +333,10 @@
         </div>
 
         <!-- Flashcard 4: E-SIM -->
-        <div class="perspective h-96 cursor-pointer group" onclick="toggleCard(this)">
-            <div class="relative w-full h-full duration-700 transform-style-3d group-hover:rotate-y-180 rounded-3xl">
+        <div class="card-container cursor-pointer group" onclick="toggleCard(this)">
+            <div class="card-inner">
                 <!-- Front of Card (Glass Water) -->
-                <div class="absolute inset-0 w-full h-full glass-water hover:border-pink-400/50 rounded-3xl p-8 flex flex-col justify-between backface-hidden">
+                <div class="card-face card-face-front glass-water hover:border-pink-400/50 p-8 flex flex-col justify-between">
                     <div class="relative z-10">
                         <div class="flex justify-between items-center">
                             <span class="text-xs font-bold uppercase tracking-wider px-3.5 py-1 bg-pink-500/20 text-pink-200 rounded-full border border-pink-400/30 backdrop-blur-md">Telecom / Explainer</span>
@@ -305,8 +350,8 @@
                         <span class="text-base group-hover:translate-x-1 transition-transform">➔</span>
                     </div>
                 </div>
-                <!-- Back of Card (Tinted Liquid Glass) -->
-                <div class="absolute inset-0 w-full h-full glass-water glass-water-back-pink rounded-3xl p-8 flex flex-col justify-center items-center text-center rotate-y-180 backface-hidden">
+                <!-- Back of Card (Tinted Liquid Glass - In Same Exact Position) -->
+                <div class="card-face card-face-back glass-water glass-water-back-pink p-8 flex flex-col justify-center items-center text-center">
                     <div class="w-16 h-16 rounded-2xl bg-pink-500/20 border border-pink-400/40 backdrop-blur-md flex items-center justify-center text-2xl mb-4 text-pink-300 shadow-inner">📶</div>
                     <h3 class="text-2xl font-bold mb-2 text-white">E-SIM Showcase</h3>
                     <p class="text-slate-200 text-sm mb-6 max-w-xs font-light">Watch the clean information design and visual retention techniques in action.</p>
@@ -324,11 +369,13 @@
         <p>&copy; 2026 Salma Mustefa.</p>
     </footer>
 
-    <!-- Flip Script -->
+    <!-- Flip Script (Flips Card Strictly In-Place) -->
     <script>
         function toggleCard(cardElement) {
-            const innerCard = cardElement.querySelector('.transform-style-3d');
-            innerCard.classList.toggle('rotate-y-180');
+            const innerCard = cardElement.querySelector('.card-inner');
+            if (innerCard) {
+                innerCard.classList.toggle('flipped');
+            }
         }
     </script>
 </body>
