@@ -23,3 +23,6 @@ Simply open `index.html` in your browser or run:
 python -m http.server 3000
 ```
 Then visit `http://localhost:3000`.
+## for Live depolyment 
+visit this link 
+https://video-editor-portfolio-sage.vercel.app/
